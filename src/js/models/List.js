@@ -2,6 +2,7 @@ import uniqid from 'uniqid';
 
 export default class List {
     constructor() {
+        this.IDs = [];
         this.items = [];
     }
 
@@ -24,5 +25,10 @@ export default class List {
 
     updateCount(id, newCount) {
         this.items.find(el => el.id === id).count = newCount;
+    }
+
+    removeAllItems() {
+        this.IDs.length = 0;
+        this.items.length = 0;
     }
 }

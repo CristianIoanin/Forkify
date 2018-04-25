@@ -59,6 +59,17 @@ elements.searchResPages.addEventListener('click', e => {
     }
 });
 
+const manageAddtoShoppingListBtn = (status) => {
+    const addBtn = document.getElementById('recipe__btn--add');
+
+    if (status) {
+        addBtn.textContent = 'Added to shopping list';
+        addBtn.style.color = "#968B87";
+    } else {
+        addBtn.textContent = 'Add to shopping list';
+        addBtn.style.color = "#FFFFFF";
+    }
+};
 
 // RECIPE CONTROLLER
 
@@ -92,6 +103,10 @@ const controlRecipe = async () => {
                 state.recipe,
                 state.likes.isLiked(id)
             );
+            if ( state.list && state.list.IDs.includes(state.recipe.id) ) {
+                manageAddtoShoppingListBtn(true);
+            };
+
         } catch(err) {
             alert('Error processing recipe!');
         }
@@ -103,12 +118,17 @@ const controlRecipe = async () => {
 const controlList = () => {
     // Create a new list if none
     if (!state.list) state.list = new List();
+    if ( state.list && !state.list.IDs.includes(state.recipe.id) ) {
+        state.list.IDs.push(state.recipe.id);
 
-    // Add ingredients to the list and UI
-    state.recipe.ingredients.forEach(el => {
-        const item = state.list.addItem(el.count, el.unit, el.ingredient);
-        listView.renderItem(item);
-    });
+        // Add ingredients to the list and UI
+        state.recipe.ingredients.forEach(el => {
+            const item = state.list.addItem(el.count, el.unit, el.ingredient);
+            listView.renderItem(item);
+        });
+
+        manageAddtoShoppingListBtn(true);
+    }
 }
 
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
@@ -129,6 +149,12 @@ elements.shopping.addEventListener('click', e => {
         state.list.updateCount(id, val);
     }
 });
+
+elements.shoppingRemove.addEventListener('click', e => {
+    listView.removeAllItems(state.list);
+    state.list.removeAllItems();
+    manageAddtoShoppingListBtn(false);
+})
 
 
 // LIKES CONTROLLER

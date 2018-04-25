@@ -487,6 +487,8 @@ body {
     visibility: hidden;
     opacity: 0;
     transition: all .5s; }
+  .shopping__remove-all {
+    margin-top: 1rem; }
   .shopping__item:hover .shopping__delete {
     opacity: 1;
     visibility: visible; }

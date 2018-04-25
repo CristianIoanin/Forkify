@@ -25,3 +25,10 @@ export const deleteItem = id => {
     const item = document.querySelector(`[data-itemid="${id}"]`);
     if (item) item.parentElement.removeChild(item);
 };
+
+export const removeAllItems = list => {
+    list.items.forEach(el => {
+        const id = el.id;
+        deleteItem(id);
+    });
+};
